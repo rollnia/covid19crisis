@@ -1,0 +1,143 @@
+<div class="container">
+    <div class="row m-5">
+        <div class="col-9 mapbox">
+            <div class="card text-center mt-3">
+                <div class="card-header">
+                    See the markers, where people needs your attention
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Google Map</h5>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <input placeholder="search for location" autocorrect="off" autocapitalize="off"
+                                spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
+                        </div>
+                    </div>
+                    <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false"
+                        [zoomControl]="true" (mapClick)="mapClicked($event)" (mapReady)="mapReady($event)">
+
+                        <agm-marker *ngFor="let m of markers; let i = index" (markerClick)="clickedMarker(m.label, i)"
+                            [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable"
+                            (dragEnd)="markerDragEnd(m, $event)" iconUrl="./assets/images/{{m.color}}-dot.png">
+
+                            <agm-info-window>
+                                <div>Help Type: <strong>{{m.type}}</strong></div>
+                                <div>Numbers: <strong>{{m.number}}</strong></div>
+                                <div>Pending since: <strong>2 days</strong></div>
+                                <button class="btn btn-primary btn-sm mt-1" *ngIf="m.number > 0; else elseBlock">Provide help</button><!--Based on the Actor condition will work-->
+                                <ng-template #elseBlock><h5>Served</h5></ng-template>
+                            </agm-info-window>
+
+                        </agm-marker>
+
+                    </agm-map>
+                </div>
+                <!-- <div class="card-footer text-muted">
+                    Last update about 5 min ago
+                </div> -->
+            </div>
+        </div>
+        <div class="col-3 markerbox">
+            <div class="card text-center mt-3">
+                <div class="card-header">
+                    Status <br>
+                    Updated 11 min ago
+                </div>
+                <div class="card-body">
+                    <hr>
+                    <h5 class="card-title">Served</h5>
+                        <p class="card-text">Food: 270</p>
+                        <p class="card-text">Drinking Water: 150</p>
+                        <p class="card-text">Medicine: 200</p>
+                        <p class="card-text">Others: 100</p>
+                    <hr>
+                    <div *ngFor="let m of markers; let i = index" class="float-left m-2">
+                        <img src="./assets/images/{{m.color}}-dot.png" /> {{m.type}}
+                    </div>
+                </div>
+                <hr>
+                <div class="card-footer text-muted">
+                    <a href="javascript:void(0)" class="btn btn-info mt-2" (click)="openModal(template)">ADD CRISIS INFO</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #template>
+    <div class="container">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Submit Crisis information</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form class="text-center" [formGroup]="saveCrisisInfo" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6" style="padding-bottom: 10px;">
+                        <input class="form-control" name="firstName" formControlName="firstName" placeholder="Firstname" type="text" required
+                            [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" autofocus />
+                        <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                            <div *ngIf="f.firstName.errors.required">Firstname is required</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6" style="padding-bottom: 10px;">
+                        <input class="form-control" name="lastName" formControlName="lastName" placeholder="Lastname" type="text" required
+                            [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+                        <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                            <div *ngIf="f.lastName.errors.required">lastName is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 10px;">
+                        <input class="form-control" name="email" formControlName="email" placeholder="E-mail" type="text" required
+                            [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                            <div *ngIf="f.email.errors.required">email is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 10px;">
+                        <input class="form-control" name="location" formControlName="location" placeholder="Location" type="text" required
+                            [ngClass]="{ 'is-invalid': submitted && f.location.errors }" />
+                        <div *ngIf="submitted && f.location.errors" class="invalid-feedback">
+                            <div *ngIf="f.location.errors.required">location is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="padding-bottom: 10px;">
+                        <input class="form-control" name="subject" formControlName="subject" placeholder="Subject" type="text" required
+                            [ngClass]="{ 'is-invalid': submitted && f.subject.errors }" />
+                        <div *ngIf="submitted && f.subject.errors" class="invalid-feedback">
+                            <div *ngIf="f.subject.errors.required">subject is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <textarea style="resize:vertical;" class="form-control" formControlName="comment" placeholder="Message..." rows="6"
+                            name="comment" required
+                            [ngClass]="{ 'is-invalid': submitted && f.comment.errors }"></textarea>
+                        <div *ngIf="submitted && f.comment.errors" class="invalid-feedback">
+                            <div *ngIf="f.comment.errors.required">comment is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <button class="btn btn-success pull-left" type="submit">Send</button>
+
+                        <button type="button" class="btn btn-default btn-close pull-right" aria-label="Close"
+                            (click)="modalRef.hide()">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</ng-template>

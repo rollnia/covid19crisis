@@ -1,0 +1,88 @@
+<br>
+<section class="min-vh-100 m-5">
+  <div id="cover-caption">
+    <div class="container">
+      <div class="row text-white">
+        <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+          <h1 class="display-4 py-2 text-truncate">Sign up</h1>
+          <div class="px-2">
+
+            <!-- Default form register -->
+            <form class="text-center" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+              <p class="h4 mb-4">Register yourself</p>
+              <div class="form-row mb-4">
+
+                <div class="col">
+                  <!-- First name -->
+                  <input placeholder="First name" type="text" formControlName="firstName" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+                  <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                    <div *ngIf="f.firstName.errors.required">First Name is required</div>
+                  </div>
+
+                </div>
+
+                <div class="col">
+                  <!-- Last name -->
+                  <input placeholder="Last name" type="text" formControlName="lastName" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+                  <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                    <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- E-mail -->
+              <input placeholder="E-mail" type="email" formControlName="email" class="form-control mb-4"
+                [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+              <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required">email is required</div>
+              </div>
+
+              <!-- Password -->
+              <input placeholder="Password" type="password" formControlName="password" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+              <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                <div *ngIf="f.password.errors.required">Password is required</div>
+                <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+              </div>
+              <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
+                At least 6 characters and 1 digit
+              </small>
+
+              <!-- Phone number -->
+              <input placeholder="Phone Number" type="text" formControlName="phone" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" />
+              <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+                <div *ngIf="f.phone.errors.required">Phone number is required</div>
+                <div *ngIf="f.phone.errors.minlength">phone must be at least 10 digits</div>
+              </div>
+              <small id="defaultRegisterFormPhoneHelpBlock" class="form-text text-muted mb-4">
+                Optional - for two-step authentication
+              </small>
+              <input placeholder="Your Location" type="text" formControlName="location" class="form-control mb-4"
+                [ngClass]="{ 'is-invalid': submitted && f.location.errors }" />
+              <div *ngIf="submitted && f.location.errors" class="invalid-feedback">
+                <div *ngIf="f.location.errors.required">location is required</div>
+              </div>
+              <select required formControlName="actorType" class="form-control">
+                <option value="admin">Admin</option>
+                <option value="moderator">Moderator</option>
+                <option value="groundLevel">Ground Level</option>
+              </select>
+
+              <!-- Sign up button -->
+              <button color="info" block="true" class="my-4 btn btn-success btn-lg" type="submit">Sign Up</button>
+
+
+            </form>
+
+            <!-- Default form register -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
