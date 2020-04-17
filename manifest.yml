@@ -2,5 +2,4 @@
 version: 1
 applications:
 - name: sample
-  memory: 512M
   instances: 2
